@@ -12,6 +12,8 @@ TOP_BAR_HEIGHT = 50
 # Game settings
 FPS = 60
 LIVES = 3
+run = True
+paused = False
 
 # Target
 TARGET_INCREMENT = 400

@@ -1,5 +1,4 @@
 import pygame
-
 import config
 
 class Endscreen:
@@ -33,8 +32,7 @@ class Endscreen:
 
         pygame.display.update()
 
-        run = True
-        while run:
+        while config.run:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
                     quit()

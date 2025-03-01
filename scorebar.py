@@ -1,7 +1,7 @@
 import pygame
 import config
 
-class Scorebar():
+class Scorebar:
     def __init__(self, win, elapsed_time, target_pressed, misses, clicks):
         self.win = win
         self.elapsed_time = elapsed_time

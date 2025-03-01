@@ -1,9 +1,7 @@
 import time
 import pygame
 
-class Aimtrainer():
-    paused = False
-    run = True
+class Aimtrainer:
     targets = []
     clock = pygame.time.Clock()
 

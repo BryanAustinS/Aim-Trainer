@@ -23,7 +23,8 @@ def main():
     # Trigger target_event every increment (s)
     pygame.time.set_timer(TARGET_EVENT, TARGET_INCREMENT)
 
-    while run:
+    print("Starting game loop")
+    while config.run:
         game.clock.tick(config.FPS)
         click = False
         mouse_pos = pygame.mouse.get_pos()
@@ -31,7 +32,7 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                config.run = False
                 break
 
             # Creating the target
