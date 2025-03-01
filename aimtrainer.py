@@ -15,7 +15,12 @@ TARGET_INCREMENT = 400
 TARGET_EVENT = pygame.USEREVENT
 
 TARGET_PADDING = 30
-FPS = 144
+FPS = 60
+
+TOP_BAR_HEIGHT = 50
+LIVES = 3
+
+LABEL_FONT = pygame.font.SysFont('Arial', 24)
 
 def draw(win, targets):
     # bg color
@@ -24,7 +29,30 @@ def draw(win, targets):
     for target in targets:
         target.draw(win)
 
-    pygame.display.update()
+def format_time(secs):
+    milli = math.floor(int(secs * 1000 % 1000) / 100)
+    seconds = int(round(secs % 60, 1))
+    minutes = int(secs // 60)
+
+    return f"{minutes:02d}:{seconds:02d}.{milli:02d}"
+
+def statistics(win, elapsed_time, target_pressed, misses):
+    pygame.draw.rect(win, "grey", (0, 0, WIDTH, TOP_BAR_HEIGHT))
+
+    time_label = LABEL_FONT.render(f"Time: {format_time(elapsed_time)}", 1, "black")
+    speed = round(target_pressed / elapsed_time, 1) if elapsed_time > 0 else 0
+    speed_label = LABEL_FONT.render(f"Speed: {speed} target/second", 1, "black")
+    hits_label = LABEL_FONT.render(f"Hits: {target_pressed}", 1, "black")
+    lives_label = LABEL_FONT.render(f"Lives: {LIVES - misses}", 1, "black")
+
+    # Dynamically position labels based on window width
+    margin = 20  # Padding from the left
+    spacing = WIDTH // 5  # Equal spacing for labels
+
+    win.blit(time_label, (margin, 5))
+    win.blit(speed_label, (spacing * 1, 5))
+    win.blit(hits_label, (spacing * 2, 5))
+    win.blit(lives_label, (spacing * 3, 5))
 
 def main():
     run = True
@@ -42,6 +70,9 @@ def main():
     while run:
         clock.tick(FPS)
         click = False
+        mouse_pos = pygame.mouse.get_pos()
+        elapsed_time = time.time() - start_time
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -70,8 +101,16 @@ def main():
                 targets.remove(target)
                 misses += 1
 
-        draw(WIN, targets)
+            if click and target.collide(*mouse_pos):
+                target_pressed += 1
+                targets.remove(target)
 
+        if misses >= LIVES:
+            pass # End game
+
+        draw(WIN, targets)
+        statistics(WIN, elapsed_time, target_pressed, misses)
+        pygame.display.update()
 
     pygame.quit()
 

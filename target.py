@@ -1,3 +1,5 @@
+import math
+
 import pygame
 
 class Target:
@@ -29,5 +31,7 @@ class Target:
         pygame.draw.circle(win, self.COLOR, (self.x, self.y), self.size * 0.6)
         pygame.draw.circle(win, self.SECOND_COLOR, (self.x, self.y), self.size * 0.4)
 
-    def collide(self, x, y):
-        return
+    def collide(self, x_click, y_click):
+        # Check if the mouse click clicks the target
+        dis = math.sqrt((x_click - self.x)**2 + (y_click - self.y)**2)
+        return dis <= self.size
