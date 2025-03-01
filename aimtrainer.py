@@ -82,8 +82,8 @@ def main():
             if event.type == TARGET_EVENT:
                 # [30, 870]
                 x = random.randint(TARGET_PADDING, WIDTH - TARGET_PADDING)
-                # [30, 1570]
-                y = random.randint(TARGET_PADDING, HEIGHT - TARGET_PADDING)
+                # [30, 1520]
+                y = random.randint(TARGET_PADDING + TOP_BAR_HEIGHT, HEIGHT - TARGET_PADDING)
 
                 target = Target(x, y)
                 targets.append(target)
