@@ -8,8 +8,9 @@ from target import Target
 from aimtrainer import Aimtrainer
 import config
 
-def main():
-    run = True
+def run_game():
+    pygame.init()  # Initialize Pygame
+    config.run = True  # Reset the run variable
 
     TARGET_EVENT = config.TARGET_EVENT
     TARGET_INCREMENT = config.TARGET_INCREMENT
@@ -63,6 +64,14 @@ def main():
         if game.misses >= config.LIVES:
             endscreen = Endscreen(config.WIN, elapsed_time, game.target_pressed, game.clicks)
             endscreen.draw()
+            if config.restart:
+                game.targets.clear()
+                game.misses = 0
+                game.target_pressed = 0
+                game.clicks = 0
+                game.start_time = time.time()
+
+
 
         game.draw(config.WIN)
         scorebar = Scorebar(config.WIN, elapsed_time, game.target_pressed, game.misses, game.clicks)
@@ -70,9 +79,15 @@ def main():
 
         pygame.display.update()
 
-    pygame.quit()
+
+def main():
+    while True:
+        config.WIN = pygame.display.set_mode((config.WIDTH, config.HEIGHT))  # Create the display surface
+        pygame.display.set_caption('Aim Trainer')
+        run_game()
+        if not config.restart:
+            break
+        config.restart = False
 
 if __name__ == "__main__":
     main()
-
-
