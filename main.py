@@ -37,7 +37,7 @@ def run_game():
                 break
 
             # Creating the target
-            if event.type == TARGET_EVENT:
+            if event.type == TARGET_EVENT and not config.paused:
                 x = random.randint(TARGET_PADDING, WIDTH - TARGET_PADDING)
                 y = random.randint(TARGET_PADDING + TOP_BAR_HEIGHT, HEIGHT - TARGET_PADDING)
 
@@ -49,36 +49,41 @@ def run_game():
                 click = True
                 game.clicks += 1
 
-        # Run target logic
-        for target in game.targets:
-            target.update()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                scorebar.pause_button.check_click(event.pos)
 
-            if target.size <= 0:
-                game.targets.remove(target)
-                game.misses += 1
+        if not config.paused:
+            # Run target logic
+            for target in game.targets:
+                target.update()
 
-            if click and target.collide(*mouse_pos):
-                game.target_pressed += 1
-                game.targets.remove(target)
+                if target.size <= 0:
+                    game.targets.remove(target)
+                    game.misses += 1
 
-        if game.misses >= config.LIVES:
-            endscreen = Endscreen(config.WIN, elapsed_time, game.target_pressed, game.clicks)
-            endscreen.draw()
-            if config.restart:
-                game.targets.clear()
-                game.misses = 0
-                game.target_pressed = 0
-                game.clicks = 0
-                game.start_time = time.time()
+                if click and target.collide(*mouse_pos):
+                    game.target_pressed += 1
+                    game.targets.remove(target)
 
-
+            if game.misses >= config.LIVES:
+                endscreen = Endscreen(config.WIN, elapsed_time, game.target_pressed, game.clicks)
+                endscreen.draw()
+                if config.restart:
+                    game.targets.clear()
+                    game.misses = 0
+                    game.target_pressed = 0
+                    game.clicks = 0
+                    game.start_time = time.time()
+        else:
+            pause_label = config.LABEL_FONT.render("PAUSED", 1, "black")
+            config.WIN.blit(pause_label, (config.get_middle(pause_label), 200))
+            pygame.display.update()
 
         game.draw(config.WIN)
         scorebar = Scorebar(config.WIN, elapsed_time, game.target_pressed, game.misses, game.clicks)
         scorebar.draw(config.WIN)
 
         pygame.display.update()
-
 
 def main():
     while True:

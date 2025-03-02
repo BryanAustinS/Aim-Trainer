@@ -6,7 +6,7 @@ pygame.init()
 # Window
 WIDTH, HEIGHT = 1600, 900
 WIN = None  # Initialize as None
-TOP_BAR_HEIGHT = 50
+TOP_BAR_HEIGHT = 75
 
 # Game settings
 FPS = 60
@@ -30,3 +30,6 @@ def format_time(secs):
     minutes = int(secs // 60)
 
     return f"{minutes:02d}:{seconds:02d}.{milli:02d}"
+
+def get_middle(surface):
+    return WIDTH / 2 - surface.get_width() / 2

@@ -1,5 +1,9 @@
 import pygame
 import config
+from button import Button
+
+def pause_game():
+    config.paused = not config.paused
 
 class Scorebar:
     def __init__(self, win, elapsed_time, target_pressed, misses, clicks):
@@ -8,6 +12,8 @@ class Scorebar:
         self.target_pressed = target_pressed
         self.misses = misses
         self.clicks = clicks
+        self.pause_button = Button(
+            config.WIDTH // 6 * 5, 5, 100, 50, "Pause", "green", pause_game)
 
     def draw(self, win):
         LABEL_FONT = config.LABEL_FONT
@@ -26,12 +32,16 @@ class Scorebar:
         accuracy_label = LABEL_FONT.render(f"Accuracy: {accuracy}%", 1, "black")
 
         # Dynamically position labels based on window width
-        margin = 20  # Padding from the left
-        spacing = config.WIDTH // 5  # Equal spacing for labels
+        margin = 10  # Padding from the left
+        spacing = config.WIDTH // 6  # Equal spacing for labels
 
         win.blit(time_label, (margin, 5))
         win.blit(speed_label, (spacing * 1, 5))
         win.blit(hits_label, (spacing * 2, 5))
         win.blit(lives_label, (spacing * 3, 5))
         win.blit(accuracy_label, (spacing * 4, 5))
+        self.pause_button.draw(self.win)
+
+
+
 

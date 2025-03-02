@@ -42,10 +42,10 @@ class Endscreen:
             accuracy = 0
         accuracy_label = LABEL_FONT.render(f"Accuracy: {accuracy}%", 1, "black")
 
-        self.win.blit(time_label, (get_middle(time_label), 100))
-        self.win.blit(speed_label, (get_middle(speed_label), 200))
-        self.win.blit(hits_label, (get_middle(hits_label), 300))
-        self.win.blit(accuracy_label, (get_middle(accuracy_label), 400))
+        self.win.blit(time_label, (config.get_middle(time_label), 100))
+        self.win.blit(speed_label, (config.get_middle(speed_label), 200))
+        self.win.blit(hits_label, (config.get_middle(hits_label), 300))
+        self.win.blit(accuracy_label, (config.get_middle(accuracy_label), 400))
         self.restart_button.draw(self.win)
         pygame.display.update()
 
@@ -56,6 +56,3 @@ class Endscreen:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.restart_button.check_click(event.pos)
 
-
-def get_middle(surface):
-    return config.WIDTH / 2 - surface.get_width() / 2
